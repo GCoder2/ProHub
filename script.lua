@@ -51,7 +51,7 @@ function ExecuteInfiniteYield()
 end
 
 function EnableFlight()
-    loadstring(game:HttpGet("https://pastebin.com/raw/6mH0Xgby"))()
+    loadstring(game:HttpGet("loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.txt"))()"))()
 end
 
 function SetSpeed(speed)
