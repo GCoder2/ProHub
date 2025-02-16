@@ -4,13 +4,14 @@ local MainFrame = Instance.new("Frame")
 local Tabs = Instance.new("Folder")
 local GeneralTab = Instance.new("TextButton")
 local TrollTab = Instance.new("TextButton")
+local ScriptsTab = Instance.new("TextButton")
 local CloseButton = Instance.new("TextButton")
 
 -- Ana GUI Ayarları
 ScreenGui.Parent = game.CoreGui
 MainFrame.Parent = ScreenGui
-MainFrame.Size = UDim2.new(0, 300, 0, 200)
-MainFrame.Position = UDim2.new(0.5, -150, 0.5, -100)
+MainFrame.Size = UDim2.new(0, 300, 0, 250)
+MainFrame.Position = UDim2.new(0.5, -150, 0.5, -125)
 MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 MainFrame.Draggable = true
 MainFrame.Active = true
@@ -28,6 +29,12 @@ TrollTab.Position = UDim2.new(0, 100, 0, 0)
 TrollTab.Text = "Troll"
 TrollTab.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
 
+ScriptsTab.Parent = MainFrame
+ScriptsTab.Size = UDim2.new(0, 100, 0, 30)
+ScriptsTab.Position = UDim2.new(0, 200, 0, 0)
+ScriptsTab.Text = "Hazır Scriptler"
+ScriptsTab.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+
 CloseButton.Parent = MainFrame
 CloseButton.Size = UDim2.new(0, 50, 0, 30)
 CloseButton.Position = UDim2.new(1, -50, 0, 0)
@@ -39,78 +46,63 @@ CloseButton.MouseButton1Click:Connect(function()
     ScreenGui:Destroy()
 end)
 
--- Genel Özellikler
-function EnableNoclip()
-    game:GetService("RunService").Stepped:Connect(function()
-        for _, v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
-            if v:IsA("BasePart") then
-                v.CanCollide = false
-            end
-        end
-    end)
+function ExecuteInfiniteYield()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
 end
 
-function EnableESP()
-    for _, player in pairs(game.Players:GetPlayers()) do
-        if player ~= game.Players.LocalPlayer then
-            local highlight = Instance.new("Highlight")
-            highlight.Parent = player.Character
-            highlight.FillColor = Color3.fromRGB(255, 0, 0)
-        end
-    end
+function EnableFlight()
+    loadstring(game:HttpGet("https://pastebin.com/raw/6mH0Xgby"))()
 end
 
-function EnableInfiniteJump()
-    game:GetService("UserInputService").JumpRequest:Connect(function()
-        game.Players.LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-    end)
+function SetSpeed(speed)
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
 end
 
--- Troll Özellikleri
-function TeleportPlayer(target, destination)
-    if target and destination then
-        target.Character.HumanoidRootPart.CFrame = destination.Character.HumanoidRootPart.CFrame
-    end
-end
-
-function LaunchPlayer(target)
-    if target and target.Character then
-        target.Character.HumanoidRootPart.Velocity = Vector3.new(0, 100, 0)
-    end
-end
-
--- Kullanıcı Arayüzü
+-- GUI İçeriği
 local GeneralFrame = Instance.new("Frame")
 GeneralFrame.Parent = MainFrame
 GeneralFrame.Size = UDim2.new(1, 0, 1, -30)
 GeneralFrame.Position = UDim2.new(0, 0, 0, 30)
 GeneralFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 
-local NoclipButton = Instance.new("TextButton")
-NoclipButton.Parent = GeneralFrame
-NoclipButton.Size = UDim2.new(0, 100, 0, 30)
-NoclipButton.Position = UDim2.new(0, 10, 0, 10)
-NoclipButton.Text = "Noclip"
-NoclipButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-NoclipButton.MouseButton1Click:Connect(EnableNoclip)
+local FlightButton = Instance.new("TextButton")
+FlightButton.Parent = GeneralFrame
+FlightButton.Size = UDim2.new(0, 100, 0, 30)
+FlightButton.Position = UDim2.new(0, 10, 0, 10)
+FlightButton.Text = "Uçma Scripti"
+FlightButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+FlightButton.MouseButton1Click:Connect(EnableFlight)
 
-local ESPButton = Instance.new("TextButton")
-ESPButton.Parent = GeneralFrame
-ESPButton.Size = UDim2.new(0, 100, 0, 30)
-ESPButton.Position = UDim2.new(0, 10, 0, 50)
-ESPButton.Text = "ESP"
-ESPButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-ESPButton.MouseButton1Click:Connect(EnableESP)
+local SpeedGuiButton = Instance.new("TextButton")
+SpeedGuiButton.Parent = GeneralFrame
+SpeedGuiButton.Size = UDim2.new(0, 100, 0, 30)
+SpeedGuiButton.Position = UDim2.new(0, 10, 0, 50)
+SpeedGuiButton.Text = "Hız Ayarla"
+SpeedGuiButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+SpeedGuiButton.MouseButton1Click:Connect(function()
+    local SpeedGui = Instance.new("Frame")
+    SpeedGui.Parent = ScreenGui
+    SpeedGui.Size = UDim2.new(0, 200, 0, 100)
+    SpeedGui.Position = UDim2.new(0.5, -100, 0.5, -50)
+    SpeedGui.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    
+    local SpeedBox = Instance.new("TextBox")
+    SpeedBox.Parent = SpeedGui
+    SpeedBox.Size = UDim2.new(0, 180, 0, 30)
+    SpeedBox.Position = UDim2.new(0, 10, 0, 10)
+    SpeedBox.PlaceholderText = "Hız Değerini Gir"
+    
+    local ConfirmButton = Instance.new("TextButton")
+    ConfirmButton.Parent = SpeedGui
+    ConfirmButton.Size = UDim2.new(0, 180, 0, 30)
+    ConfirmButton.Position = UDim2.new(0, 10, 0, 50)
+    ConfirmButton.Text = "Onayla"
+    ConfirmButton.MouseButton1Click:Connect(function()
+        SetSpeed(tonumber(SpeedBox.Text))
+        SpeedGui:Destroy()
+    end)
+end)
 
-local JumpButton = Instance.new("TextButton")
-JumpButton.Parent = GeneralFrame
-JumpButton.Size = UDim2.new(0, 100, 0, 30)
-JumpButton.Position = UDim2.new(0, 10, 0, 90)
-JumpButton.Text = "Sınırsız Zıplama"
-JumpButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-JumpButton.MouseButton1Click:Connect(EnableInfiniteJump)
-
--- Troll Tab GUI
 local TrollFrame = Instance.new("Frame")
 TrollFrame.Parent = MainFrame
 TrollFrame.Size = UDim2.new(1, 0, 1, -30)
@@ -118,18 +110,13 @@ TrollFrame.Position = UDim2.new(0, 0, 0, 30)
 TrollFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 TrollFrame.Visible = false
 
-local LaunchButton = Instance.new("TextButton")
-LaunchButton.Parent = TrollFrame
-LaunchButton.Size = UDim2.new(0, 100, 0, 30)
-LaunchButton.Position = UDim2.new(0, 10, 0, 10)
-LaunchButton.Text = "Uçurma"
-LaunchButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-LaunchButton.MouseButton1Click:Connect(function()
-    for _, player in pairs(game.Players:GetPlayers()) do
-        if player ~= game.Players.LocalPlayer then
-            LaunchPlayer(player)
-        end
-    end
+local LaunchGuiButton = Instance.new("TextButton")
+LaunchGuiButton.Parent = TrollFrame
+LaunchGuiButton.Size = UDim2.new(0, 100, 0, 30)
+LaunchGuiButton.Position = UDim2.new(0, 10, 0, 10)
+LaunchGuiButton.Text = "Uçurma GUI"
+LaunchGuiButton.MouseButton1Click:Connect(function()
+    -- Uçurma GUI'si oluşturulabilir
 end)
 
 GeneralTab.MouseButton1Click:Connect(function()
@@ -140,4 +127,8 @@ end)
 TrollTab.MouseButton1Click:Connect(function()
     GeneralFrame.Visible = false
     TrollFrame.Visible = true
+end)
+
+ScriptsTab.MouseButton1Click:Connect(function()
+    ExecuteInfiniteYield()
 end)
