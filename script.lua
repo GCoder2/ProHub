@@ -58,6 +58,41 @@ function SetSpeed(speed)
     game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
 end
 
+-- Yeni Teleport GUI Fonksiyonu
+function OpenTeleportGui()
+    local TeleportGui = Instance.new("Frame")
+    TeleportGui.Parent = ScreenGui
+    TeleportGui.Size = UDim2.new(0, 250, 0, 150)
+    TeleportGui.Position = UDim2.new(0.5, -125, 0.5, -75)
+    TeleportGui.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    
+    local Player1Box = Instance.new("TextBox")
+    Player1Box.Parent = TeleportGui
+    Player1Box.Size = UDim2.new(0, 230, 0, 30)
+    Player1Box.Position = UDim2.new(0, 10, 0, 10)
+    Player1Box.PlaceholderText = "Işınlanan Oyuncu"
+    
+    local Player2Box = Instance.new("TextBox")
+    Player2Box.Parent = TeleportGui
+    Player2Box.Size = UDim2.new(0, 230, 0, 30)
+    Player2Box.Position = UDim2.new(0, 10, 0, 50)
+    Player2Box.PlaceholderText = "Işınlanılan Oyuncu"
+    
+    local ConfirmButton = Instance.new("TextButton")
+    ConfirmButton.Parent = TeleportGui
+    ConfirmButton.Size = UDim2.new(0, 230, 0, 30)
+    ConfirmButton.Position = UDim2.new(0, 10, 0, 90)
+    ConfirmButton.Text = "Onayla"
+    ConfirmButton.MouseButton1Click:Connect(function()
+        local player1 = game.Players:FindFirstChild(Player1Box.Text)
+        local player2 = game.Players:FindFirstChild(Player2Box.Text)
+        if player1 and player2 then
+            player1.Character:SetPrimaryPartCFrame(player2.Character.PrimaryPart.CFrame)
+        end
+        TeleportGui:Destroy()
+    end)
+end
+
 -- GUI İçeriği
 local GeneralFrame = Instance.new("Frame")
 GeneralFrame.Parent = MainFrame
@@ -103,32 +138,10 @@ SpeedGuiButton.MouseButton1Click:Connect(function()
     end)
 end)
 
-local TrollFrame = Instance.new("Frame")
-TrollFrame.Parent = MainFrame
-TrollFrame.Size = UDim2.new(1, 0, 1, -30)
-TrollFrame.Position = UDim2.new(0, 0, 0, 30)
-TrollFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-TrollFrame.Visible = false
-
-local LaunchGuiButton = Instance.new("TextButton")
-LaunchGuiButton.Parent = TrollFrame
-LaunchGuiButton.Size = UDim2.new(0, 100, 0, 30)
-LaunchGuiButton.Position = UDim2.new(0, 10, 0, 10)
-LaunchGuiButton.Text = "Uçurma GUI"
-LaunchGuiButton.MouseButton1Click:Connect(function()
-    -- Uçurma GUI'si oluşturulabilir
-end)
-
-GeneralTab.MouseButton1Click:Connect(function()
-    GeneralFrame.Visible = true
-    TrollFrame.Visible = false
-end)
-
-TrollTab.MouseButton1Click:Connect(function()
-    GeneralFrame.Visible = false
-    TrollFrame.Visible = true
-end)
-
-ScriptsTab.MouseButton1Click:Connect(function()
-    ExecuteInfiniteYield()
-end)
+local TeleportGuiButton = Instance.new("TextButton")
+TeleportGuiButton.Parent = GeneralFrame
+TeleportGuiButton.Size = UDim2.new(0, 100, 0, 30)
+TeleportGuiButton.Position = UDim2.new(0, 10, 0, 90)
+TeleportGuiButton.Text = "Teleport GUI"
+TeleportGuiButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+TeleportGuiButton.MouseButton1Click:Connect(OpenTeleportGui)
